@@ -1,0 +1,25 @@
+﻿@page
+@model IndexModel
+@using App.Models
+@{
+    ViewData["Title"] = "Home page";
+    var posts = ViewData["post"] as List<Article>;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@if (posts != null) {
+    <ol>
+    @foreach (var post in posts)
+    {
+        <li>
+            @post.Title
+        </li>
+    }
+</ol>
+} else {
+    <h1>Null</h1>
+}

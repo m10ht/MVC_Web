@@ -1,0 +1,72 @@
+@page
+@model CS58_ASP_Razor_09.Pages_Blog.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    int count = 0;
+}
+
+
+<form method="get" asp-page="./Index">
+    <label>Tìm kiếm</label>
+    <input type="text" name="searchString"/>
+    <button>Tìm</button>
+
+</form>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Tạo bài viết mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Created)
+            </th>
+            <th>
+                @* @Html.DisplayNameFor(model => model.Article[0].Content) *@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Article) {
+        <tr>
+            <td>
+                @(++count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td> *@
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Chỉnh sửa</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+@{
+    var pagingModel = new VNC.Helpers.PagingModel() {
+        currentPage = Model.current_page,
+        countPages = Model.count_pages,
+        generateUrl = (int? p) => Url.Page("/Blog/Index", new {p = p})
+    };
+}
+
+<partial name="_PagingVNC" model="@pagingModel"/>

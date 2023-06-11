@@ -1,0 +1,37 @@
+﻿@page "/admin/members"
+@model App.Admin.User.IndexModel
+@{
+    ViewData["Title"] = "Danh sách các thành viên";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<partial name="_StatusMessage" model="@Model.StatusMessage"></partial>
+<p>Tổng số thành viên: @Model.totalUser</p>
+<table class="table">
+    <tr>
+        <th>Tên người dùng</th>
+        <th>Vai trò</th>
+        <th>Tác vụ</th>
+    </tr>
+    @foreach (var user in Model._users) {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.RoleNames</td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-page="./ResetPassword" asp-route-id="@user.Id">Đặt lại mật khẩu</a>
+                <a class="btn btn-success btn-sm" asp-page="./AddRole" asp-route-id="@user.Id">Cập nhật</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@{
+    var pagingModel = new VNC.Helpers.PagingModel() {
+        currentPage = Model.current_page,
+        countPages = Model.count_pages,
+        generateUrl = (int? p) => Url.Page("./Index", new {p = p})
+    };
+}
+
+<partial name="_PagingVNC" model="@pagingModel"/>
